@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gateway Lab Frontend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #0078d4;
+        }
+        .status {
+            margin-top: 20px;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: #e1f0ff;
+            color: #005a9e;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 15px;
+            font-size: 1em;
+            border: none;
+            border-radius: 6px;
+            background-color: #0078d4;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005a9e;
+        }
+    </style>
+</head>
+<body>
+    <h1>Azure Microservices Lab</h1>
+    <div class="status" id="gateway-status">Gateway Status: checking...</div>
+    <button onclick="checkGateway()">Check Gateway</button>
+
+    <script>
+        const statusDiv = document.getElementById('gateway-status');
+        async function checkGateway() {
+            try {
+                const res = await fetch('http://localhost:3000/health');
+                if (res.ok) {
+                    const data = await res.json();
+                    statusDiv.textContent = 'Gateway Status: ' + data.status;
+                } else {
+                    statusDiv.textContent = 'Gateway Status: error';
+                }
+            } catch (err) {
+                statusDiv.textContent = 'Gateway Status: error';
+            }
+        }
+
+        // auto check once on load
+        checkGateway();
+    </script>
+</body>
+</html>
